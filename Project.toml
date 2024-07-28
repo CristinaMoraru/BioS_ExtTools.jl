@@ -1,0 +1,7 @@
+name = "BioS_ExtTools"
+uuid = "2ab26461-0724-42ce-b75e-a46d47467e92"
+authors = ["Cristina Moraru"]
+version = "0.2.0"
+
+[compat]
+julia = "1.10"
