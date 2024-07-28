@@ -1,7 +1,15 @@
 name = "BioS_ExtTools"
 uuid = "2ab26461-0724-42ce-b75e-a46d47467e92"
 authors = ["Cristina Moraru"]
-version = "0.2.0"
+version = "0.4.0"
+
+[deps]
+BioS_Gen = "a3c344c2-dffd-44c7-b934-12f2f183f71e"
+BioS_ProjsWFs = "36c12c74-29c3-48bc-adf7-572884ba4778"
+BioS_SeqFuns = "f626d2e5-ec45-404c-84c6-8efe5c847b30"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 julia = "1.10"
