@@ -20,6 +20,7 @@ include("misc/BioS_ExtTools_cmd_Primer3.jl")
 include("misc/BioS_ExtTools_cmd_Shrinksam.jl")
 include("misc/BioS_ExtTools_cmd_CalcCov.jl")
 include("misc/BioS_ExtTools_cmd_Samtools.jl")
+include("misc/BioS_ExtTools_cmd_DoFeature-Counts.jl")
 
 # seq-aligners
 include("seq-aligners/BioS_ExtTools_cmd_Blast.jl")
@@ -38,6 +39,7 @@ include("Binners/BioS_ExtTools_cmd_DasTool.jl")
 include("ReadMappers/BioS_ExtTools_cmd_Bowtie2.jl")
 include("ReadMappers/BioS_ExtTools_cmd_MiniMap2.jl")
 include("ReadMappers/BioS_DoBowtie/DoBowtieCom.jl")
+include("ReadMappers/BioS_ExtTools_cmd_BBmap.jl")
 
 # virus-predictors
 include("virus_predictors/BioS_ExtTools_cmd_VirSorter.jl")

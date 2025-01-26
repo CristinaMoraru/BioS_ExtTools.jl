@@ -15,11 +15,8 @@ struct RunSamtoolsViewCmd <: BioinfCmd
     out_f::Union{SamP, BamP, CramP}
 end
 
-function build_cmd(obj::RunSamtoolsViewCmd)
-    cmd = `$(obj.program) view --threads $(obj.num_threads) $(obj.more_opts) -o $(obj.out_f.p) $(obj.in_f.p)`
-    
-    return cmd
-end
+build_cmd(obj::RunSamtoolsViewCmd) = `$(obj.program) view --threads $(obj.num_threads) $(obj.more_opts) -o $(obj.out_f.p) $(obj.in_f.p)`
+build_cmd(obj::RunSamtoolsViewCmd, parentD::String) = `$(obj.program) view --threads $(obj.num_threads) $(obj.more_opts) -o $parentD/$(obj.out_f.p) $parentD/$(obj.in_f.p)`
 
 #endregion
 
@@ -33,11 +30,8 @@ struct RunSamtoolsSortCmd <: BioinfCmd
     out_f::Union{SamP, BamP, CramP}
 end
 
-function build_cmd(obj::RunSamtoolsSortCmd)
-    cmd = `$(obj.program) sort --threads $(obj.num_threads) $(obj.more_opts) -o $(obj.out_f.p) $(obj.in_f.p)` 
-    
-    return cmd
-end
+build_cmd(obj::RunSamtoolsSortCmd) = `$(obj.program) sort --threads $(obj.num_threads) $(obj.more_opts) -o $(obj.out_f.p) $(obj.in_f.p)` 
+build_cmd(obj::RunSamtoolsSortCmd, parentD::String) = `$(obj.program) sort --threads $(obj.num_threads) $(obj.more_opts) -o $parentD/$(obj.out_f.p) $parentD/$(obj.in_f.p)` 
 
 #endregion
 
@@ -50,9 +44,6 @@ struct RunSamtoolsCovCmd <: BioinfCmd
     out_f::TableP
 end
 
-function build_cmd(obj::RunSamtoolsCovCmd)
-    cmd = `$(obj.program) coverage $(obj.more_opts) -o $(obj.out_f.p) $(obj.in_f.p)` 
-    return cmd
-end
-
+build_cmd(obj::RunSamtoolsCovCmd) = `$(obj.program) coverage $(obj.more_opts) -o $(obj.out_f.p) $(obj.in_f.p)`
+build_cmd(obj::RunSamtoolsCovCmd, parentD::String) = `$(obj.program) coverage $(obj.more_opts) -o $parentD/$(obj.out_f.p) $parentD/$(obj.in_f.p)`
 #endregion

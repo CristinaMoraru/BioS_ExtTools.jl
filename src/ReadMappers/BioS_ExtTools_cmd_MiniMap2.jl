@@ -10,6 +10,9 @@ end
 build_cmd(cmd::RunMiniMap2IndexCmd) = 
     `$(cmd.program) -I 10000G -x $(cmd.pressetX) -d $(cmd.index.p) $(cmd.inref.p) --secondary=no`
 
+build_cmd(cmd::RunMiniMap2IndexCmd, parentD::String) = 
+    `$(cmd.program) -I 10000G -x $(cmd.pressetX) -d $parentD/$(cmd.index.p) $(cmd.inref.p) --secondary=no`
+
 struct RunMiniMap2AligCmd <: BioinfCmd
     program::String
     num_threads::Int64
@@ -25,6 +28,15 @@ function build_cmd(cmd::RunMiniMap2AligCmd)
         cmd = `$(cmd.program) -o $(cmd.out_p.p) -t $(cmd.num_threads) -ax $(cmd.pressetX) $(cmd.index.p) --split-prefix mmsplit $(cmd.read1.p) --secondary=no --sam-hit-only` #  -N 5 (max number of secondary alignments to output for each primary alignment; default: 5)
     else
         cmd = `$(cmd.program) -o $(cmd.out_p.p) -t $(cmd.num_threads) -ax $(cmd.pressetX) $(cmd.index.p) --split-prefix mmsplit $(cmd.read1.p) $(cmd.read2.p) --secondary=no --sam-hit-only` #  -N 5 (max number of secondary alignments to output for each primary alignment; default: 5)
+    end
+
+end
+
+function build_cmd(cmd::RunMiniMap2AligCmd, parentD::String)
+    if ismissing(cmd.read2)
+        cmd = `$(cmd.program) -o $parentD$(cmd.out_p.p) -t $(cmd.num_threads) -ax $(cmd.pressetX) $parentD$(cmd.index.p) --split-prefix mmsplit $(cmd.read1.p) --secondary=no --sam-hit-only` #  -N 5 (max number of secondary alignments to output for each primary alignment; default: 5)
+    else
+        cmd = `$(cmd.program) -o $parentD$(cmd.out_p.p) -t $(cmd.num_threads) -ax $(cmd.pressetX) $parentD$(cmd.index.p) --split-prefix mmsplit $(cmd.read1.p) $(cmd.read2.p) --secondary=no --sam-hit-only` #  -N 5 (max number of secondary alignments to output for each primary alignment; default: 5)
     end
 
 end
