@@ -41,8 +41,9 @@ function build_cmd(cmd::RunBBMapMap)
             idhist=$(cmd.statsD)/idhist.tsv 
             covstats=$(cmd.statsD)/covstats.tsv 
             basecov=$(cmd.statsD)/basecov.tsv 
-            -Xmx10g mdtag=t xstag=t stoptag=t lengthtag=t idtag=t k=13 threads=1 
+            -Xmx10g mdtag=t xstag=fs stoptag=t lengthtag=t idtag=t k=13 
             pairedonly=t untrim=t mappedonly=t 32bit=t maxlen=600 local=f cigar=t 
+            keepnames=t pairlen=500 
             idfilter=$(cmd.idfilter) subfilter=$(cmd.subfilter) insfilter=$(cmd.insfilter) 
             delfilter=$(cmd.delfilter) indelfilter=$(cmd.indelfilter) 
             inslenfilter=$(cmd.inslenfilter) dellenfilter=$(cmd.dellenfilter) nfilter=$(cmd.nfilter) 
@@ -66,8 +67,9 @@ function build_cmd(cmd::RunBBMapMap, parentD::String)
             idhist=$parentD/$(cmd.statsD)/idhist.tsv 
             covstats=$parentD/$(cmd.statsD)/covstats.tsv 
             basecov=$parentD/$(cmd.statsD)/basecov.tsv 
-            -Xmx10g mdtag=t xstag=t stoptag=t lengthtag=t idtag=t k=13 threads=1 
+            -Xmx10g mdtag=t xstag=fs stoptag=t lengthtag=t idtag=t k=13 
             pairedonly=t untrim=t mappedonly=t 32bit=t maxlen=600 local=f cigar=t 
+            keepnames=t pairlen=500 
             idfilter=$(cmd.idfilter) subfilter=$(cmd.subfilter) insfilter=$(cmd.insfilter) 
             delfilter=$(cmd.delfilter) indelfilter=$(cmd.indelfilter) 
             inslenfilter=$(cmd.inslenfilter) dellenfilter=$(cmd.dellenfilter) nfilter=$(cmd.nfilter) 

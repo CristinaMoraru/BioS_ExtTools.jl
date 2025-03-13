@@ -73,13 +73,14 @@ function unsplit_dvf_out!(dvfdf::DataFrame, split_contigs::Dict{String, Vector{S
             end
         end
 
-        mediansc = median(scores)
-        medianpval = median(pvals)
+        if !isempty(scores) && !isempty(pvals)
+            mediansc = median(scores)
+            medianpval = median(pvals)
 
-        if mediansc >= scoreTh && medianpval <= pThreshold
-            push!(dvfdf, (contig, len, mediansc, medianpval, "putative virus"))
-        end
-
+            if mediansc >= scoreTh && medianpval <= pThreshold
+                push!(dvfdf, (contig, len, mediansc, medianpval, "putative virus"))
+            end
+        end 
     end
 
     return dvfdf
