@@ -16,9 +16,9 @@ end
 
 function build_cmd(obj::RunGenomadCmd) 
     if isnothing(obj.min_score)
-        cmd = `genomad $(obj.task) --cleanup --splits 8 $(obj.input_f.p) $(obj.output_d) $(obj.database) --threads $(obj.num_threads) $(obj.other_options)`
+        cmd = `genomad $(obj.task) --cleanup --splits 8 $(obj.input_f.p) $(obj.output_d) $(obj.database) --threads $(obj.num_threads)$(obj.other_options)`
     else
-        cmd = `genomad $(obj.task) --cleanup --splits 8 $(obj.input_f.p) $(obj.output_d) $(obj.database) --threads $(obj.num_threads) --min-score $(obj.min_score) $(obj.other_options)`
+        cmd = `genomad $(obj.task) --cleanup --splits 8 $(obj.input_f.p) $(obj.output_d) $(obj.database) --threads $(obj.num_threads) --min-score $(obj.min_score)$(obj.other_options)`
     end
 
     return cmd
@@ -26,9 +26,9 @@ end
 
 function build_cmd(obj::RunGenomadCmd, parentD::String) 
     if isnothing(obj.min_score)
-        cmd = `genomad $(obj.task) --cleanup --splits 8 $parentD/$(obj.input_f.p) $parentD/$(obj.output_d) $(obj.database) --threads $(obj.num_threads) $(obj.other_options)`
+        cmd = `genomad $(obj.task) --cleanup --splits 8 $parentD/$(obj.input_f.p) $parentD/$(obj.output_d) $(obj.database) --threads $(obj.num_threads)$(obj.other_options)`
     else
-        cmd = `genomad $(obj.task) --cleanup --splits 8 $parentD/$(obj.input_f.p) $parentD/$(obj.output_d) $(obj.database) --threads $(obj.num_threads) --min-score $(obj.min_score) $(obj.other_options)`
+        cmd = `genomad $(obj.task) --cleanup --splits 8 $parentD/$(obj.input_f.p) $parentD/$(obj.output_d) $(obj.database) --threads $(obj.num_threads) --min-score $(obj.min_score)$(obj.other_options)`
     end
 
     return cmd
