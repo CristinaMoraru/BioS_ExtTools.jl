@@ -1,7 +1,7 @@
 name = "BioS_ExtTools"
 uuid = "2ab26461-0724-42ce-b75e-a46d47467e92"
 authors = ["Cristina Moraru"]
-version = "0.4.41"
+version = "0.4.42"
 
 [deps]
 BioS_Gen = "a3c344c2-dffd-44c7-b934-12f2f183f71e"
