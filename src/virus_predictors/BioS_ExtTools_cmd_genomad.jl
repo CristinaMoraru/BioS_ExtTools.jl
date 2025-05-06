@@ -11,10 +11,10 @@ struct RunGenomadCmd <: BioinfCmd
     database::String
     min_score::Union{Float64, Nothing}
     num_threads::Int64
-    other_options::Union{String, Nothing}
+    other_options::Union{Vector{String}, Nothing}
 end
 
-function build_cmd(obj::RunGenomadCmd) 
+function build_cmd(obj::RunGenomadCmd)
     if isnothing(obj.other_options)
         if isnothing(obj.min_score)
             cmd = `genomad $(obj.task) --cleanup --splits 8 $(obj.input_f.p) $(obj.output_d) $(obj.database) --threads $(obj.num_threads)`
