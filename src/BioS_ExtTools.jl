@@ -21,11 +21,13 @@ include("misc/BioS_ExtTools_cmd_Shrinksam.jl")
 include("misc/BioS_ExtTools_cmd_CalcCov.jl")
 include("misc/BioS_ExtTools_cmd_Samtools.jl")
 include("misc/BioS_ExtTools_cmd_DoFeature-Counts.jl")
+include("misc/BioS_ExtTools_cmd_kmer-db.jl")
 
 # seq-aligners
 include("seq-aligners/BioS_ExtTools_cmd_Blast.jl")
 include("seq-aligners/BioS_ExtTools_cmd_MMseqs2.jl")
 include("seq-aligners/BioS_ExtTools_Skani.jl")
+include("seq-aligners/BioS_ExtTools_cmd_LZ-ANI.jl")
 
 # binners
 include("Binners/BioS_ExtTools_cmd_MaxBin2.jl")

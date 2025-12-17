@@ -11,16 +11,16 @@ const ALLOWED_BL_STRINGENCY =Dict(
 
 ## Data structure and constructors to create the makeblastdb command objects
 """
-    MakeBlastDb_cmd(program, in, input_type, dbtype, out, title)
+    MakeBlastDb_cmd(software_p, in, input_type, dbtype, out, title)
     This is the standard constructor for the MakeBlastDb_cmd data type. Here, the value for every field needs to be inputed. 
     This constructor has several methods, detailed below. These methods use multiple dispatch on parameter type and number, 
-    to set the values of the "program", "input_type" and "dbtype" fields according to the data type of the input sequence.
+    to set the values of the "software_p", "input_type" and "dbtype" fields according to the data type of the input sequence.
     
     ## Returns 
     - a MakeBlastDb_cmd data type object.
 """
 struct MakeBlastDb_cmd <: BlastCmd
-    program::String
+    software_p::String
     in::Union{FnaP, FaaP}
     input_type::String
     dbtype::String
@@ -31,17 +31,17 @@ end
 """
     MakeBlastDb_cmd
     This function is a method of the MakeBlastDb_cmd() constructor. It accepts only the values for four fields of the MakeBlastDb_cmd data type. 
-    It accepts as value for the "in" parameter only an object of the Union{FnaP, FaaP} abstract type. Therefore, it sets the values of the "program" and 
+    It accepts as value for the "in" parameter only an object of the Union{FnaP, FaaP} abstract type. Therefore, it sets the values of the "software_p" and 
     "input_type" fields as "makeblast" and "fasta", respectively.
     
     ## Returns
     - a MakeBlastDb_cmd data type object created with the standard constructor.
 """
-function MakeBlastDb_cmd(in::Union{FnaP, FaaP}, dbtype::String, out::String, title::String)
-    program = "makeblastdb"
+function MakeBlastDb_cmd(software_p::String, in::Union{FnaP, FaaP}, dbtype::String, out::String, title::String)
+    software_p = "$(software_p)/makeblastdb"
     in = in
     input_type = "fasta"
-    return MakeBlastDb_cmd(program, in, input_type, dbtype, out, title)
+    return MakeBlastDb_cmd(software_p, in, input_type, dbtype, out, title)
 end
 
 """
@@ -53,9 +53,9 @@ end
     ## Returns
      - a MakeBlastDb_cmd data type object, by a call to another method of the MakeBlastDb_cmd() constructor.
 """
-function MakeBlastDb_cmd(in::FnaP, out::String, title::String)
+function MakeBlastDb_cmd(software_p::String, in::FnaP, out::String, title::String)
     dbtype =  "nucl"
-    return MakeBlastDb_cmd(in, dbtype, out, title)
+    return MakeBlastDb_cmd(software_p, in, dbtype, out, title)
 end
 
 """
@@ -68,16 +68,16 @@ end
      - a MakeBlastDb_cmd data type object, by a call to another method of the MakeBlastDb_cmd() constructor.
 """
 
-function MakeBlastDb_cmd(in::FaaP, out::String, title::String)
+function MakeBlastDb_cmd(software_p::String, in::FaaP, out::String, title::String)
     dbtype =  "'prot'"
-    return MakeBlastDb_cmd(in, dbtype, out, title)
+    return MakeBlastDb_cmd(software_p, in, dbtype, out, title)
 end
 
 
 ## Data structure and constructors for BLAST
 
 struct RunBlastNCmd <: RunBlastCmds
-    program::String
+    software_p::String
     db::String
     query::FnaP
     out::TableP
@@ -92,9 +92,13 @@ struct RunBlastNCmd <: RunBlastCmds
     num_threads::Int
 end
 
-function runBlastCmd(db::String, query::FnaP, out::TableP, stringency::String, num_threads::Int64)                            ##this is only for BlastN
-    program = "blastn"
-    outfmt = "6 qseqid sseqid evalue bitscore qstart qend sstart send qlen slen pident qseq sseq length nident mismatch gaps"
+function runBlastCmd(software_p::String, db::String, query::FnaP, out::TableP, stringency::String, num_threads::Int64; outfmt::String="none")                            ##this is only for BlastN
+    software_p = "$(software_p)/blastn"
+
+    if outfmt == "none"
+        outfmt = "6 qseqid sseqid evalue bitscore qstart qend sstart send qlen slen pident qseq sseq length nident mismatch gaps"
+    end
+
     evalue = "1"
     max_target_seqs = 1000000
     #= for more details about blastn options, see https://www.ncbi.nlm.nih.gov/books/NBK279690/pdf/Bookshelf_NBK279690.pdf =#
@@ -131,12 +135,12 @@ function runBlastCmd(db::String, query::FnaP, out::TableP, stringency::String, n
         end
     end
     
-    return RunBlastNCmd(program, db, query, out, outfmt, evalue, max_target_seqs, word_size, reward, penalty, 
+    return RunBlastNCmd(software_p, db, query, out, outfmt, evalue, max_target_seqs, word_size, reward, penalty, 
                         gapopen, gapextend, num_threads)
 end
 
 struct RunBlastPCmd <: RunBlastCmds
-    program::String
+    software_p::String
     db::String
     query::FaaP
     out::TableP
@@ -153,8 +157,8 @@ struct RunBlastPCmd <: RunBlastCmds
     num_threads::Int
 end
 
-function runBlastCmd(db::String, query::FaaP, out::TableP, max_target_seqs::Int64, stringency::String, num_threads::Int64)                            ##this is only for BlastN
-    program = "blastp"
+function runBlastCmd(software_p::String, db::String, query::FaaP, out::TableP, max_target_seqs::Int64, stringency::String, num_threads::Int64)                            ##this is only for BlastN
+    software_p = "$(software_p)/blastp"
     outfmt = "6 qseqid sseqid evalue bitscore qstart qend sstart send qlen slen pident qseq sseq length nident mismatch gaps"
     evalue = "0.00001"
 
@@ -186,7 +190,7 @@ function runBlastCmd(db::String, query::FaaP, out::TableP, max_target_seqs::Int6
         threshold = 21
     end
     
-    return RunBlastPCmd(program, db, query.p, out, outfmt, evalue, max_target_seqs, word_size,
+    return RunBlastPCmd(software_p, db, query.p, out, outfmt, evalue, max_target_seqs, word_size,
                         gapopen, gapextend, comp_based_stats, window_size, matrix, threshold, num_threads)
 end
 
@@ -201,14 +205,14 @@ end
 # Functions to build the commands, return a Cmd data type.
 
 function build_cmd(cmd::MakeBlastDb_cmd)
-    cmd = `$(cmd.program) -in $(cmd.in.p) -input_type $(cmd.input_type) -dbtype $(cmd.dbtype) 
+    cmd = `$(cmd.software_p) -in $(cmd.in.p) -input_type $(cmd.input_type) -dbtype $(cmd.dbtype) 
     -out $(cmd.out) -title $(cmd.title)`
 
     return cmd
 end
 
 function build_cmd(cmd::RunBlastNCmd)
-    cmd = `$(cmd.program) -db $(cmd.db) -query $(cmd.query.p) -out $(cmd.out.p) -outfmt $(cmd.outfmt) 
+    cmd = `$(cmd.software_p) -db $(cmd.db) -query $(cmd.query.p) -out $(cmd.out.p) -outfmt $(cmd.outfmt) 
     -evalue $(cmd.evalue) -max_target_seqs $(cmd.max_target_seqs) -word_size $(cmd.word_size) 
     -reward $(cmd.reward) -penalty $(cmd.penalty) -gapopen $(cmd.gapopen) -gapextend $(cmd.gapextend) 
     -num_threads $(cmd.num_threads)`
@@ -217,7 +221,7 @@ function build_cmd(cmd::RunBlastNCmd)
 end
 
 function build_cmd(cmd::RunBlastPCmd)
-    cmd = `$(cmd.program) -db $(cmd.db) -query $(cmd.query.p) -out $(cmd.out.p) -outfmt $(cmd.outfmt) 
+    cmd = `$(cmd.software_p) -db $(cmd.db) -query $(cmd.query.p) -out $(cmd.out.p) -outfmt $(cmd.outfmt) 
     -evalue $(cmd.evalue) -max_target_seqs $(cmd.max_target_seqs) -word_size $(cmd.word_size) -gapopen $(cmd.gapopen) 
     -gapextend $(cmd.gapextend) -comp_based_stats $(cmd.comp_based_stats) -window_size $(cmd.window_size)
     -matrix $(cmd.matrix) -threshold $(cmd.threshold) -num_threads $(cmd.num_threads)`
