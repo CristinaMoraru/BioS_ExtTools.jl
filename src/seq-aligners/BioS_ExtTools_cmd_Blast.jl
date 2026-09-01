@@ -90,6 +90,7 @@ struct RunBlastNCmd <: RunBlastCmds
     gapopen::Int
     gapextend::Int
     num_threads::Int
+    task::String
 end
 
 function runBlastCmd(software_p::String, db::String, query::FnaP, out::TableP, stringency::String, num_threads::Int64; outfmt::String="none")                            ##this is only for BlastN
@@ -115,12 +116,16 @@ function runBlastCmd(software_p::String, db::String, query::FnaP, out::TableP, s
             word_size = 7
         end
 
+        task = "blastn-short"
+
     elseif stringency == "average"         # similar to blastn
         reward = 2
         penalty = -3
         gapopen = 5
         gapextend = 2
         word_size = 11
+
+        task = "blastn"
 
     elseif stringency == "high20" || stringency == "high28" #similar to megablast
         reward = 1
@@ -133,10 +138,12 @@ function runBlastCmd(software_p::String, db::String, query::FnaP, out::TableP, s
         else 
             word_size = 28
         end
+
+        task = "megablast"
     end
     
     return RunBlastNCmd(software_p, db, query, out, outfmt, evalue, max_target_seqs, word_size, reward, penalty, 
-                        gapopen, gapextend, num_threads)
+                        gapopen, gapextend, num_threads, task)
 end
 
 struct RunBlastPCmd <: RunBlastCmds
@@ -215,7 +222,7 @@ function build_cmd(cmd::RunBlastNCmd)
     cmd = `$(cmd.software_p) -db $(cmd.db) -query $(cmd.query.p) -out $(cmd.out.p) -outfmt $(cmd.outfmt) 
     -evalue $(cmd.evalue) -max_target_seqs $(cmd.max_target_seqs) -word_size $(cmd.word_size) 
     -reward $(cmd.reward) -penalty $(cmd.penalty) -gapopen $(cmd.gapopen) -gapextend $(cmd.gapextend) 
-    -num_threads $(cmd.num_threads)`
+    -num_threads $(cmd.num_threads) -task $(cmd.task) -comp_based_stats 0`
 
     return cmd
 end
