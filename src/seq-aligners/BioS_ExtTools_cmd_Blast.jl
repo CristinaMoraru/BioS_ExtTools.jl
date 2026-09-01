@@ -222,7 +222,7 @@ function build_cmd(cmd::RunBlastNCmd)
     cmd = `$(cmd.software_p) -db $(cmd.db) -query $(cmd.query.p) -out $(cmd.out.p) -outfmt $(cmd.outfmt) 
     -evalue $(cmd.evalue) -max_target_seqs $(cmd.max_target_seqs) -word_size $(cmd.word_size) 
     -reward $(cmd.reward) -penalty $(cmd.penalty) -gapopen $(cmd.gapopen) -gapextend $(cmd.gapextend) 
-    -num_threads $(cmd.num_threads) -task $(cmd.task) -comp_based_stats 0`
+    -num_threads $(cmd.num_threads) -task $(cmd.task)`
 
     return cmd
 end
