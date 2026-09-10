@@ -304,6 +304,6 @@ function load_blastout(cmd::RunBlastCmds)
     header = outfmt2header(cmd.outfmt)
     #[:qseqid, :sseqid, :evalue, :bitscore, :qstart, :qend, :sstart, :send, :qlen, :slen, :pident, :qseq, :sseq, :length, :nident, :mismatch, :gaps]
     #blastout_df = CSV.File(cmd.out; delim='\t', header=header) |> DataFrame
-    blastout_df = CSV.read(cmd.out, DataFrame; delim='\t', header=header)
+    blastout_df = CSV.read(cmd.out.p, DataFrame; delim='\t', header=header)
     return blastout_df
 end
